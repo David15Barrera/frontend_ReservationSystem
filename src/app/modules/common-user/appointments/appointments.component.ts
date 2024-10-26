@@ -352,6 +352,11 @@ export class AppointmentsComponent {
     }
   }
 
+openModalCalendar(){
+  this.isModalOpen = true;
+}
+
+
   closeModal() {
     this.isModalOpen = false;
   }
