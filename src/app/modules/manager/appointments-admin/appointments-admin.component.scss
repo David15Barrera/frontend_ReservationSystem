@@ -1,0 +1,103 @@
+.container {
+    max-width: 1200px;
+    margin: auto;
+  
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+  
+    th, td {
+      padding: 12px;
+      border: 1px solid #ccc;
+      text-align: left;
+    }
+  
+    th {
+      background-color: #333;
+      color: white;
+    }
+  
+    .modal {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  
+  /* Asegura que las tablas se comporten bien en pantallas pequeñas */
+  @media (max-width: 640px) {
+    table {
+      font-size: 0.8rem; /* Reduce el tamaño de la fuente en pantallas pequeñas */
+    }
+  
+    th, td {
+      padding: 0.5rem; /* Reduce el padding en celdas */
+    }
+  }
+  
+/* Estilos del botón */
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-button {
+  padding: 10px 20px;
+  border: 1px solid #ccc;
+  background-color: #fff;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 200px;
+  border-radius: 5px;
+}
+
+/* Icono de flecha */
+.dropdown-button::after {
+  content: '▼';
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+/* Menú desplegable */
+.dropdown-content {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+}
+
+/* Enlaces de cada categoría */
+.dropdown-content a {
+  color: #333;
+  padding: 10px 15px;
+  text-decoration: none;
+  display: block;
+  font-size: 14px;
+}
+
+.dropdown-content a:hover {
+  background-color: #f1f1f1;
+}
+
+/* Línea divisoria */
+.dropdown-divider {
+  border-top: 1px solid #eaeaea;
+  margin: 5px 0;
+}
+
+/* Mostrar menú cuando esté activo */
+.dropdown-content.show {
+  display: block;
+}

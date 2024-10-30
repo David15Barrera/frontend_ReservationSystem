@@ -1,0 +1,64 @@
+<main>
+    <div class="header">
+        <h2>Reporte de General de Servicios</h2>
+        <button class="submit-button" (click)="realizarReport()">Realizar Reporte</button>
+        @if (serviceReport.length > 0) {
+        <button class="submit-button pdf" (click)="exportPDf()">Exporar PDF</button>
+        <button class="submit-button pdf" (click)="exportExcel()">Exporar Excel</button>
+        }
+    </div>
+
+    <div class="filter-bar">
+
+        <div class="filter-group">
+            <label for="filter-type">Filtrar por:</label>
+            <select id="filter-type" name="filter-type" [(ngModel)]="selectedFilter">
+                <option value="Todos">TODOS</option>
+                <option value="Disponible">Disponibles</option>
+                <option value="No-Disponibles">No Disponibles</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="start-date">Fecha de inicio:</label>
+            <input id="start-date" type="date" name="start-date" [(ngModel)]="startDate">
+        </div>
+
+        <div class="filter-group">
+            <label for="end-date">Fecha final:</label>
+            <input id="end-date" type="date" name="end-date" [(ngModel)]="endDate">
+        </div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>Descripcion</th>
+                    <th>Duracion (H)</th>
+                    <th>Estado</th>
+                    <th>Precio Q</th>
+                    <th>Citas</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of serviceReport; track $index) {
+                <tr>
+                    <td>{{$index+1}}</td>
+                    <td>{{item.name}}</td>
+                    <td>{{item.description}}</td>
+                    <td>{{item.duration}}</td>
+                    <td>{{item.status}}</td>
+                    <td>{{item.price}}</td>
+                    <td>{{item.citas}}</td>
+                </tr>
+                }
+                <tr>
+                    <td colspan="6"><strong>Total :</strong></td>
+                    <td><strong>{{totol}}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>

@@ -1,0 +1,75 @@
+<div class="edit-user-container p-6 bg-white rounded-lg shadow-md">
+    <div>
+        <h2 class="text-2xl font-bold mb-4">Agregar/Editar usuario</h2>
+    </div>
+
+    <form [formGroup]="formulario" class="text-center">
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700" for="nombre">Nombre</label>
+            <input
+                id="nombre"
+                formControlName="nombre"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                type="text"
+                hidden
+            />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700" for="correo">Correo</label>
+            <input
+                id="correo"
+                formControlName="correo"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+                type="email"
+                placeholder="Ingresa tu correo"
+            />
+        </div>
+
+        <div class="mb-4">
+            <label class="block text-sm font-medium text-gray-700" for="rol">Cambiar rol</label>
+            <select
+                id="rol"
+                (change)="onRoleChangeUser($event)"
+                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-500 focus:ring-opacity-50"
+            >
+                <option value="" disabled selected>Selecciona un rol</option>
+                <ng-container *ngFor="let item of roles; let i = index">
+                    <option [value]="item.name">{{ item.name }}</option>
+                </ng-container>
+            </select>
+        </div>
+
+        <div class="mb-4">
+            <h3 class="text-lg font-semibold mb-2">Permisos</h3>
+            <div class="w-full">
+                <ng-container *ngIf="isCallaborator()">
+                    <div class="flex flex-col space-y-2">
+                        <ng-container *ngFor="let item of permissions; let i = index">
+                            <label class="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    [value]="item.name"
+                                    [(ngModel)]="selectedPermisosEdit[i]"
+                                    (change)="onSelectionChange($event)"
+                                    class="form-checkbox h-4 w-4 text-blue-600 focus:ring-blue-500"
+                                />
+                                <span class="ml-2 text-gray-700">{{ item.name }}</span>
+                            </label>
+                        </ng-container>
+                    </div>
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="pb-2">
+            <button
+                type="button"
+                (click)="enviarFormulario()"
+                class="mt-4 w-full bg-blue-600 text-white font-semibold py-2 rounded-md hover:bg-blue-500 focus:outline-none focus:ring focus:ring-blue-300"
+            >
+                Actualizar
+            </button>
+        </div>
+    </form>
+</div>

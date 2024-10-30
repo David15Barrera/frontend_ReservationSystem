@@ -84,7 +84,7 @@
           class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md">
           Actualizar Servicio
         </button>
-        <button (click)="deleteService()"
+        <button *ngIf="canAccess('ELIMINAR SERVICIO')" (click)="deleteService()"
           class="bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2 rounded-md">
           Eliminar Servicio
         </button>

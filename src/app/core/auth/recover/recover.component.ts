@@ -51,7 +51,7 @@ export class RecoverComponent {
           case "ADMIN":
             this.router.navigate(['manager/inicio'])
             break
-          case "AYUDANTE":
+          case "EMPLEADO":
             this.router.navigate(['manager/inicio'])
             break
           case "CLIENTE":

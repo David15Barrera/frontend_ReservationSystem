@@ -1,1 +1,59 @@
-<p>appointments-admin works!</p>
+<div class="container mx-auto p-5">
+    @if (role === 'ADMIN') {
+    <h1 class="text-2xl font-bold mb-4">Todas la Citas</h1>
+    }@else {
+    <h1 class="text-2xl font-bold mb-4">Mis Citas</h1>
+    }
+    <div class="overflow-x-auto">
+        <table class="min-w-full bg-white border border-gray-300 mb-4 table-auto">
+            <thead>
+                <tr>
+                    <th class="border px-2 py-2 text-left text-xs">Fecha</th>
+                    <th class="border px-2 py-2 text-left text-xs">Hora de Inicio</th>
+                    <th class="border px-2 py-2 text-left text-xs">Cliente</th>
+                    <th class="border px-2 py-2 text-left text-xs">Estado</th>
+                    <th class="border px-2 py-2 text-left text-xs">Servicio</th>
+                    @if (role === 'ADMIN') {
+                    <th class="border px-2 py-2 text-left text-xs">Empleado</th>
+                    }
+                    <th class="border px-2 py-2 text-left text-xs">Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of appointmenReports; track $index) {
+                <tr>
+                    <td class="border px-2 py-2 text-sm">{{item.fecha}}</td>
+                    <td class="border px-2 py-2 text-sm">{{item.horaInicio}}</td>
+                    <td class="border px-2 py-2 text-sm">{{item.cliente}}</td>
+                    <td class="border px-2 py-2 text-sm">{{item.estado}}</td>
+                    <td class="border px-2 py-2 text-sm">{{item.servicio}}</td>
+                    @if (role === 'ADMIN') {
+                    <td class="border px-2 py-2 text-sm">{{item.empleado}}</td>
+                    }
+                    @if (item.estado === 'RESERVADO') {
+                    <td class="border px-2 py-2 text-sm">
+                        <div class="dropdown">
+                            <button class="dropdown-button" (click)="toggleDropdown($index)">
+                                Filtrar por categoría
+                            </button>
+
+                            <div class="dropdown-content" [class.show]="dropdownStates[$index]">
+                                <a href="javascript:void(0)" (click)="completed(item.appointment.id)">Completado</a>
+                                <a href="javascript:void(0)" (click)="canceled(item.appointment.id)">No se presento</a>
+                            </div>
+                        </div>
+                    </td>
+                    }@else {
+                    <td class="border px-2 py-2 text-sm">
+                        sin acciones
+                    </td>
+                    }
+
+                </tr>
+
+                }
+
+            </tbody>
+        </table>
+    </div>
+</div>

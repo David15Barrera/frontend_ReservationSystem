@@ -1,0 +1,65 @@
+<main>
+    <div class="header">
+        <h2>Reporte de General de Citas</h2>
+        <button class="submit-button" (click)="realizarReport()">Realizar Reporte</button>
+        @if (appointmenReports.length > 0) {
+        <button class="submit-button pdf" (click)="exportPDf()">Exporar PDF</button>
+        <button class="submit-button pdf" (click)="exportExcel()">Exporar Excel</button>
+        }
+    </div>
+
+    <div class="filter-bar">
+
+        <div class="filter-group">
+            <label for="filter-type">Filtrar por:</label>
+            <select id="filter-type" name="filter-type" [(ngModel)]="selectedFilter">
+                <option value="all">TODOS</option>
+                <option value="completed">COMPLETADOS</option>
+                <option value="recerved">RECERVADOS</option>
+                <option value="canceled">CANCELADOS</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="start-date">Fecha de inicio:</label>
+            <input id="start-date" type="date" name="start-date" [(ngModel)]="startDate">
+        </div>
+
+        <div class="filter-group">
+            <label for="end-date">Fecha final:</label>
+            <input id="end-date" type="date" name="end-date" [(ngModel)]="endDate">
+        </div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Cliente</th>
+                    <th>Servicio</th>
+                    <th>Fecha</th>
+                    <th>Hora</th>
+                    <th>Empleado</th>
+                    <th>Precio Q</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of appointmenReports; track $index) {
+                <tr>
+                    <td>{{$index+1}}</td>
+                    <td>{{item.cliente}}</td>
+                    <td>{{item.servicio}}</td>
+                    <td>{{item.fecha}}</td>
+                    <td>{{item.horaInicio}}</td>
+                    <td>{{item.empleado}}</td>
+                    <td>{{item.price}}</td>
+                </tr>
+                }
+                <tr>
+                    <td colspan="6"><strong>Total :</strong></td>
+                    <td><strong>{{totol}}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</main>

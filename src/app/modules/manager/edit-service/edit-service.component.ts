@@ -8,7 +8,9 @@ import Swal from 'sweetalert2';
 import { UploadImgService } from '../../../config/services/upload-img.service';
 import { ServiceService } from '../utils/services/service.service';
 import { ServiceDto } from '../utils/models/service.dto';
-
+import { PermissionDTO } from '../utils/models/collaborators';
+import { Store } from '@ngrx/store';
+import { CallaboratorService } from '../utils/services/callaborator.service';
 @Component({
   selector: 'app-edit-service',
   standalone: true,
@@ -27,6 +29,10 @@ export class EditServiceComponent implements OnInit {
 
   businessConfiguration!: BusinessConfigurationDto
 
+  role: string | null = null;
+  permissions: PermissionDTO[] = []; // Cambié a tipo PermissionDTO
+
+
   private readonly managmetService = inject(ManagmentService)
   private readonly uploadService = inject(UploadImgService)
   private readonly serviceService = inject(ServiceService)
@@ -35,9 +41,20 @@ export class EditServiceComponent implements OnInit {
   action: string = '';
   serviceDto!: ServiceDto
 
-  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder) { }
+  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private store: Store, private CallaboratorService: CallaboratorService) { }
 
   ngOnInit(): void {
+    const userData = localStorage.getItem('session');
+    console.log(userData);
+
+    if (userData) {
+      const user = JSON.parse(userData);
+      this.role = user.role; // Obtener el rol del usuario
+
+      // Llamar al método del servicio para obtener permisos
+      this.getUserPermissions(user.id);
+    }
+
     this.route.params.subscribe(params => {
       this.action = params['action'];
 
@@ -49,6 +66,20 @@ export class EditServiceComponent implements OnInit {
     this.getBusinessConfiguration()
   }
 
+  getUserPermissions(userId: number) {
+    this.CallaboratorService.getUserPermissions(userId).subscribe({
+      next: (permissions) => {
+        this.permissions = permissions; // Asigna los permisos obtenidos
+      },
+      error: (error) => {
+        console.error('Error al obtener permisos', error);
+      }
+    });
+  }
+
+  canAccess(permission: string): boolean {
+    return this.role !== 'EMPLEADO' || this.permissions.some(p => p.name === permission);
+  }
 
   validForm(): boolean {
     if (!this.registerForm.valid) {

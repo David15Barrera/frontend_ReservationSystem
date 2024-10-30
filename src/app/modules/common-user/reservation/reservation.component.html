@@ -1,1 +1,73 @@
-<p>reservation works!</p>
+<div class="container mx-auto p-4">
+    <h2 class="text-3xl font-semibold text-center mb-6 text-gray-800">Estado de Pedidos</h2>
+<br>
+    <!-- Tabla de pedidos -->
+    <div class="overflow-x-auto">
+      <table class="min-w-full bg-white border border-gray-300">
+        <thead>
+          <tr class="bg-gray-100 text-gray-700">
+            <th class="py-3 px-4 text-left">ID</th>
+            <th class="py-3 px-4 text-left">Servicio</th>
+            <th class="py-3 px-4 text-left">Empleado</th>
+            <th class="py-3 px-4 text-left">Inicio</th>
+            <th class="py-3 px-4 text-left">Fin</th>
+            <th class="py-3 px-4 text-left">Estado</th>
+            <th class="py-3 px-4 text-left">Método de Pago</th>
+            <th class="py-3 px-4 text-center">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let appointment of appointments" class="border-b hover:bg-gray-100">
+            <td class="py-3 px-4 text-gray-800">{{ appointment.id }}</td>
+            <td class="py-3 px-4 text-gray-800">{{ getServiceName(appointment.service) }}</td>
+            <td class="py-3 px-4 text-gray-800">{{ getEmployeeName(appointment.employeeId) }}</td>
+            <td class="py-3 px-4 text-gray-800">{{ appointment.startDate | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td class="py-3 px-4 text-gray-800">{{ appointment.endDate | date: 'yyyy-MM-dd HH:mm:ss' }}</td>
+            <td class="py-3 px-4">
+              <span class="px-3 py-1 rounded-full text-xs font-semibold"
+                    [ngClass]="{
+                      'bg-green-100 text-green-700': appointment.status === 'RESERVED',
+                      'bg-red-100 text-red-700': appointment.status === 'CANCELLED'
+                    }">
+                {{ appointment.status }}
+              </span>
+            </td>
+            <td class="py-3 px-4 text-gray-800">{{ appointment.paymentMethod }}</td>
+
+            <td class="py-3 px-4 text-center">
+
+              <div class="flex justify-center space-x-2">
+                <button 
+                  class="bg-blue-500 hover:bg-blue-600 text-white py-1 px-4 rounded text-sm" 
+                  [disabled]="!isCancellationAllowed(appointment)"
+                  (click)="cancelAppointment(appointment)">
+                  Cancelar
+                </button>
+            
+                <button 
+                  class="bg-yellow-500 hover:bg-yellow-600 text-white py-1 px-4 rounded text-sm"
+                  (click)="showPdfMessage(appointment.id)">
+                  PDF
+                </button>
+              </div>
+
+            </td>
+                          
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+        <!-- Mensaje si no hay pedidos -->
+        <div *ngIf="appointments.length === 0" class="text-center mt-6 text-gray-600">
+          <p>No hay pedidos disponibles.</p>
+        </div>
+    <br>
+    <br>
+    
+<h4 class="text-l font-semibold text-center mb-2 text-gray-800"> Nota</h4>
+    <h5 class="text-l font-semibold text-center mb-2 text-gray-800">Si se pasa de la fecha sin cancelar se bloqueará el boton y se le Multará por parte del personal administrativo y se le notificará</h5>
+    <h5 class="text-l font-semibold text-center mb-2 text-gray-800">Si cancela una hora antes se le cobrará una multa y se le notificará</h5>  
+
+  </div>
+  

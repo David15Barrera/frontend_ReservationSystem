@@ -1,0 +1,55 @@
+<main>
+    <div class="header">
+        <h2>Reporte de General de Clientes</h2>
+        <button class="submit-button" (click)="realizarReport()">Realizar Reporte</button>
+        @if (clientReport.length > 0) {
+        <button class="submit-button pdf" (click)="exportPDf()">Exporar PDF</button>
+        <button class="submit-button pdf" (click)="exportExcel()" >Exporar Excel</button> 
+        }
+    </div>
+
+    <div class="filter-bar">
+
+        <div class="filter-group">
+            <label for="filter-type">Filtrar por:</label>
+            <select id="filter-type" name="filter-type" [(ngModel)]="selectedFilter">
+                <option value="Todos">TODOS</option>
+                <option value="Mal-Uso">Mal Comportamiento</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label for="start-date">Fecha de inicio:</label>
+            <input id="start-date" type="date" name="start-date" [(ngModel)]="startDate">
+        </div>
+
+        <div class="filter-group">
+            <label for="end-date">Fecha final:</label>
+            <input id="end-date" type="date" name="end-date" [(ngModel)]="endDate">
+        </div>
+    </div>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Nombre</th>
+                    <th>email</th>
+                    <th>cui</th>
+                    <th>Cantidad citas</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (item of clientReport; track $index) {
+                <tr>
+                    <td>{{$index+1}}</td>
+                    <td>{{item.Nombre}}</td>
+                    <td>{{item.email}}</td>
+                    <td>{{item.cui}}</td>
+                    <td>{{item.Cantidad}}</td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</main>
