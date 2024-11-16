@@ -114,7 +114,7 @@ export class AppointmentsAdminComponent {
           console.error('Error al completar la cita:', error);
         }
       } else if (result.isDenied) {
-        Swal.fire("No se realizo ninguan accions", "", "info");
+        Swal.fire("No se realizo ninguna accion", "", "info");
       }
     });
   }
@@ -145,7 +145,7 @@ export class AppointmentsAdminComponent {
           console.error('Error al completar la cita:', error);
         }
       } else if (result.isDenied) {
-        Swal.fire("No se realizo ninguan accions", "", "info");
+        Swal.fire("No se realizo ninguna accion", "", "info");
       }
     });
     
@@ -179,7 +179,7 @@ export class AppointmentsAdminComponent {
       case 'COMPLETED':
         return 'COMPLETADO'
       case 'CANCELED':
-        return 'CANCELED'
+        return 'CANCELADO'
       default:
         return 'RESERVADO'
 

@@ -1,42 +1,39 @@
 .container {
-    max-width: 1200px;
-    margin: auto;
-  
-    table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-  
-    th, td {
-      padding: 12px;
-      border: 1px solid #ccc;
-      text-align: left;
-    }
-  
-    th {
-      background-color: #333;
-      color: white;
-    }
-  
-    .modal {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+  max-width: 1200px;
+  margin: auto;
+  padding: 0 15px;
+
+  table {
+    width: 100%;
+    border-collapse: collapse; /* Mantener bordes bien definidos */
   }
-  
-  /* Asegura que las tablas se comporten bien en pantallas pequeñas */
-  @media (max-width: 640px) {
-    table {
-      font-size: 0.8rem; /* Reduce el tamaño de la fuente en pantallas pequeñas */
-    }
-  
-    th, td {
-      padding: 0.5rem; /* Reduce el padding en celdas */
-    }
+
+  th,
+  td {
+    padding: 12px;
+    border: 1px solid #ccc;
+    text-align: left;
+    word-wrap: break-word; /* Permite que las palabras largas se ajusten */
+    word-break: break-word; /* Rompe las palabras largas si es necesario */
+    white-space: normal; /* Permite que el texto fluya y se ajuste */
   }
-  
-/* Estilos del botón */
+
+  th {
+    background-color: #333;
+    color: white;
+  }
+
+  .overflow-x-auto {
+    overflow-x: auto; /* Permite el desplazamiento horizontal solo si es necesario */
+  }
+}
+
+/* Eliminar el desplazamiento horizontal */
+.overflow-x-auto {
+  overflow-x: hidden; /* Eliminamos el desplazamiento horizontal */
+}
+
+/* Botones del dropdown */
 .dropdown {
   position: relative;
   display: inline-block;
@@ -53,24 +50,22 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 200px;
   border-radius: 5px;
 }
 
-/* Icono de flecha */
 .dropdown-button::after {
   content: '▼';
   font-size: 12px;
   margin-left: 8px;
 }
 
-/* Menú desplegable */
 .dropdown-content {
   display: none;
   position: absolute;
   top: 100%;
   left: 0;
   width: 100%;
+  max-width: 250px; /* Limita el ancho del dropdown */
   background-color: #fff;
   border: 1px solid #ccc;
   border-radius: 5px;
@@ -78,7 +73,6 @@
   z-index: 1;
 }
 
-/* Enlaces de cada categoría */
 .dropdown-content a {
   color: #333;
   padding: 10px 15px;
@@ -91,13 +85,63 @@
   background-color: #f1f1f1;
 }
 
-/* Línea divisoria */
-.dropdown-divider {
-  border-top: 1px solid #eaeaea;
-  margin: 5px 0;
-}
-
-/* Mostrar menú cuando esté activo */
 .dropdown-content.show {
   display: block;
+}
+
+/* Hacer la tabla más responsiva en pantallas pequeñas */
+@media (max-width: 640px) {
+  table {
+    width: 100%;
+    display: block; /* Hacemos que la tabla se comporte como un bloque en pantallas pequeñas */
+    font-size: 0.9rem;
+  }
+
+  thead {
+    display: none; /* Ocultamos los encabezados en pantallas pequeñas */
+  }
+
+  tbody {
+    display: block;
+    width: 100%;
+  }
+
+  tr {
+    display: block; /* Cada fila se convierte en un bloque */
+    margin-bottom: 10px;
+    border: none;
+    background-color: #f9f9f9; /* Fondo más claro para diferenciar filas */
+    padding: 10px;
+  }
+
+  td {
+    display: block;
+    width: 100%;
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: right;
+    position: relative;
+    font-size: 0.9rem; /* Ajuste de fuente */
+  }
+
+  td:before {
+    /* Añadimos el encabezado como pseudo-elemento */
+    content: attr(data-label);
+    font-weight: bold;
+    position: relative;
+    left: -4px;
+  }
+
+
+}
+
+@media (max-width: 480px) {
+  table {
+    font-size: 0.8rem; /* Reduce aún más el tamaño de la fuente */
+  }
+
+  th,
+  td {
+    padding: 6px;
+  }
 }
