@@ -47,11 +47,13 @@ export class SettingsComponent {
     this.userService.changePassword(Number(this.id), { password: this.password, repeatedPassword: this.passwordConfirm }).subscribe({
       next: value =>{
         this.msgOk()
+        this.password = ''
+        this.passwordConfirm = ''
       }, 
       error: err =>{
         Swal.fire({
           title: "Ups!",
-          text: "Ah ocurrido un erro al intentar cambiar tu contrasenia, intenta mas tarde",
+          text: "Ah ocurrido un erro al intentar cambiar tu contraseña, intenta mas tarde",
           icon: "error"
         });
         console.log(err);

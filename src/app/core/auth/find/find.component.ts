@@ -20,6 +20,7 @@ export class FindComponent {
 
   findAccount() {
     if (!this.email) {
+
       Swal.fire({
         icon: "question",
         title: "Oops...",
@@ -28,19 +29,19 @@ export class FindComponent {
       return
     }
 
-    this.authService.recoverPassword({ email: this.email }).subscribe({
-      next: value =>{
+  this.authService.recoverPassword({ email: this.email }).subscribe({
+      next: value => {
         localStorage.setItem("current_user", this.email)
         this.router.navigate(['session/recuperacion'])
       },
-      error: err =>{
+      error: err => {
         Swal.fire({
           icon: "error",
           title: "Correo invalido.",
-          text: "Correo no encontrado en el sistema",
-          footer: '<a>Asegurese de ingresar el correo relacionado con su cuenta.!</a>'
+          text: "Correo no encontrado",
+          footer: '<a>Verifica el correo relacionado con su cuenta!</a>'
         });
       }
     })
-  }
+}
 }

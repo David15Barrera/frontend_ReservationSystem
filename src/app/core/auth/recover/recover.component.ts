@@ -42,22 +42,9 @@ export class RecoverComponent {
     }
     this.authService.recoverPasswordConfirmation(this.user, this.code).subscribe({
       next: value =>{
-        console.log(value);
-        let roleUpper = value.role.toUpperCase()
-  
         this.store.dispatch(setSession({ session: value }))
-        //TODO: redirigi area de trabajo
-        switch (roleUpper) {
-          case "ADMIN":
-            this.router.navigate(['manager/inicio'])
-            break
-          case "EMPLEADO":
-            this.router.navigate(['manager/inicio'])
-            break
-          case "CLIENTE":
-            this.router.navigate(['user/dashboard'])
-            break
-        }
+        this.router.navigate(['session/change-pass'])
+
       },
       error: err =>{
         Swal.fire({
@@ -68,5 +55,5 @@ export class RecoverComponent {
       }
     })
   }
-
 }
+
