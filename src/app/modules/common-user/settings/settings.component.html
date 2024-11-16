@@ -54,6 +54,9 @@
         </div>
   
       </form>
+  
+      <h3 class="text-xl font-bold text-center text-blue-700 mb-6 mt-4">Cambiar Contraseña</h3>
+  
       <div>
         <label for="password" class="block mb-1 text-sm font-medium text-gray-700">Contraseña Actual:</label>
         <input type="password" id="password" class="w-full p-2.5 border border-gray-300 rounded-md" placeholder="********"
@@ -70,6 +73,29 @@
       <div class="flex justify-center mt-6">
         <button class="bg-blue-400 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md"
           (click)="changePassword()">Actualizar</button>
+      </div>
+  
+      <h3 class="text-xl font-bold text-center text-blue-700 mb-6 mt-4">Activar/Desactivar Autenticación 2F</h3>
+      <p class="text-center"> <strong> Proteje tu Cuenta:</strong> la apliacion proporciona una opcion de Autenticación de
+        2 factores,
+        agregando una segunda capa de proteccion
+        usando Google Authenticator, <strong> descarga Google Authenticator en tu móvil</strong></p>
+  
+      <div>
+        @if (userDto.hasMultiFactorAuth) {
+        <p class="mt-4">Estado de A2F: <strong class="text-blue-700">Activa</strong></p>
+        <div class="flex justify-center mt-6">
+          <button class="bg-violet-400 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md"
+            (click)="desactivar()">Desactivar</button>
+        </div>
+        }@else {
+        <p class="mt-4">Estado de A2F: <strong class="font-bold text-blue-700">Inactiva</strong></p>
+        <div class="flex justify-center mt-6">
+          <button class="bg-violet-400 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md"
+            (click)="activarA2F()">Activar</button>
+        </div>
+  
+        }
       </div>
   
     </div>

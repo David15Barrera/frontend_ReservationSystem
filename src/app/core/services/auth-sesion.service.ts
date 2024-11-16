@@ -50,4 +50,10 @@ export class AuthSesionService {
   recoverPasswordChange(NewPassword: string, id:number) {
     return this._http.put<any>(`${this.apiConfig.API_USER}/change-password/${id}`, { NewPassword })
   }
+
+  disableMFA() {
+    return this._http.patch<any>(`${this.apiConfig.API_USER}/disable-a2f`, {  })
+  }
+
+
 }
