@@ -33,10 +33,9 @@ export class RecoverComponent {
   confirm() {
     if (!this.code) {
       Swal.fire({
-        icon: "question",
-        title: "Oops...",
-        text: "Ingrese el codigo, por favor",
-        footer: '<a>Asegurese de ingresar el codigo que se le fue enviado al correo</a>'
+        icon: "warning",
+        title: "Codigo Correo",
+        text: "Asegurese de ingresar el codigo que se le fue enviado al correo",
       });
       return
     }
@@ -49,8 +48,8 @@ export class RecoverComponent {
       error: err =>{
         Swal.fire({
           icon: "error",
-          title: "Codigo incorrecto.",
-          text: "Ingrese el codigo que se le envio al correo",
+          title: "Codigo incorrecto",
+          text: "Ingrese el codigo correcto que se le ha enviado al correo electronico",
         });
       }
     })

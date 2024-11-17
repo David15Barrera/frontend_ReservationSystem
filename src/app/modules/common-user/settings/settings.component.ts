@@ -156,8 +156,8 @@ export class SettingsComponent {
 
   msgOk() {
     Swal.fire({
-      title: "Actulizacion exitosa",
-      text: "Los Cambios de su perfil se realizaron con exito",
+      title: "Actualización exitosa",
+      text: "Los cambios se realizadon con exito",
       icon: "success"
     });
   }
@@ -174,29 +174,41 @@ activarA2F() {
 
     Swal.fire({
       title: 'Autenticación de 2 factores',
-      html: `
-      <div class="container" style="text-align: center; margin: 0 auto;">
-        <p class="subtitle">Protege tu Cuenta</p>
-        <p class="moresub">Descarga la app Google Authenticator en tu móvil. Escanea el código QR o ingresa el código.</p>
-        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
-          <img src="${qrCodeDataUrl}" alt="Código QR" style="width: 256px; height: 256px; margin-bottom: 16px;" />
-          <div class="subtitle" style="text-align: center;">${this.secretKey}</div>
+      html:`
+    <div class="flex flex-col md:flex-row md:space-x-6 items-center">
+      <!-- Columna 1: Código QR y Clave Secreta -->
+      <div class="flex flex-col items-center space-y-4 md:w-1/2">
+        <!-- QR y clave secreta -->
+        <div class="bg-gray-100 p-4 rounded-lg shadow-md">
+          <h4 class="text-center text-base font-semibold mb-2">Escanea el Código QR</h4>
+          <img src="${qrCodeDataUrl}" alt="Código QR" class="w-64 h-64 mx-auto rounded-lg shadow" />
         </div>
-        <p class="moresub">Ingresa el código que te aparece en la aplicación</p>
-        <div style="margin-top: 16px;">
-          <label for="code-input" class="input-label">Código</label>
-          <input id="code-input" type="number" class="custom-input" 
-            style="width: 100%; padding: 8px; margin-top: 8px; border: 1px solid #ccc; border-radius: 4px; outline: none;" />
+        <p class="text-sm font-mono bg-blue-100 px-2 py-1 rounded-lg text-blue-700 text-center mt-2">${this.secretKey}</p>
+      </div>
+
+      <!-- Columna 2: Instrucciones y Entrada del Código -->
+      <div class="flex flex-col items-center md:w-1/2">
+        <!-- Instrucciones -->
+        <div class="text-center mb-4">
+          <h4 class="text-lg font-semibold mb-2">Paso 1: Descarga Google Authenticator</h4>
+          <p class="text-sm text-gray-600">Instala la aplicación en tu dispositivo móvil para comenzar con la configuración.</p>
+        </div>
+
+        <!-- Ingreso del código -->
+        <div class="w-full">
+          <label for="code-input" class="block text-sm font-medium text-gray-700">Paso 2: Ingresa el Código</label>
+          <input id="code-input" type="number" class="w-full p-2 border border-gray-300 rounded-md mt-1 focus:ring focus:ring-blue-300 focus:outline-none" placeholder="Código de 6 dígitos">
         </div>
       </div>
-    `,      
+    </div>
+  `,
       showCancelButton: true,
       confirmButtonText: 'Confirmar',
       cancelButtonText: 'Cancelar',
       preConfirm: () => {
         const inputValue = (document.getElementById('code-input') as HTMLInputElement).value;
         if (!inputValue) {
-          Swal.showValidationMessage('Por favor ingresa el código');
+          Swal.showValidationMessage('Necesitas ingresar el codigo');
         }
         return inputValue;
       }
@@ -217,17 +229,16 @@ enableMFA() {
     next: value =>{
       this.getMe()
       Swal.fire({
-        title: "Autenticacion 2F, Completado",
-        text: "La Autenticacion de 2F se ha completado con exito, en el siguiente inicio de sesion, se agregara la capa extra de seguridad",
+        title: "Autenticacion Completado",
+        text: "Proceso realizado con exito, en el siguiente inicio de sessión podras usar esta autentificación",
         icon: "success"
       });
     },
     error: err =>{
       Swal.fire({
-        icon: "info",
-        title: "Oops...",
-        text: "El codigo que ha introducido es invalido",
-        footer: '<a>scaneo el codigo desde la aplicacion?, intente con saltar</a>'
+        icon: "warning",
+        title: "Codigo NO valido",
+        text: "El codigo que ha introducido no es el correcto"
       });
     }
   })
@@ -235,15 +246,15 @@ enableMFA() {
 
 redirectionUser() {
   Swal.fire({
-    title: "No Completado",
-    text: "La Autenticacion de 2F, no se completo, por lo que seguira desactivada",
-    icon: "info"
+    title: "Autentificacion 2F",
+    text: "El procedimiento fue cancelado por lo cual no se activará",
+    icon: "error"
   });
 }
 
 desactivar(){
   Swal.fire({
-    title: "Esta seguro de Descativar la Autenticacion de 2 Factores?",
+    title: "Descativar la Autenticacion de 2 Factores",
     showDenyButton: true,
     showCancelButton: false,
     confirmButtonText: "Si, continuar",
@@ -260,14 +271,14 @@ desactivar(){
         error: err =>{
           Swal.fire({
             title: "No Completado",
-            text: "No se ha posido desactivar la Autenticacion de 2F, no se completo, por lo que seguira Activado, intente mas tarde",
+            text: "No se ha posido desactivar la Autenticacion de 2F, intente mas tarde",
             icon: "error"
           });
         }
       })
 
     } else if (result.isDenied) {
-      Swal.fire("No se realizo ninguan Accion", "", "info");
+      Swal.fire("No se realizo ninguan Accion", "", "warning");
     }
   });
 }

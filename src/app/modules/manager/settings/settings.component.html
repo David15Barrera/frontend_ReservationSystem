@@ -1,101 +1,142 @@
-@if(registerForm){
-<div class="flex justify-center items-center min-h-screen bg-gray-100 pt-10">
-  <div class="bg-blue-50 p-8 rounded-lg shadow-md w-11/12 md:w-8/12 lg:w-6/12">
-    <form [formGroup]="registerForm" (submit)="update()">
-      <h2 class="text-2xl font-bold text-center text-blue-700 mb-6">Editar Perfil</h2>
+@if(registerForm) {
+  <div class="flex justify-center items-center min-h-screen bg-gray-100 py-10">
+    <div class="bg-white p-8 rounded-lg shadow-lg w-11/12 md:w-8/12 lg:w-6/12">
+      <h2 class="text-3xl font-bold text-center text-blue-700 mb-6">Editar Perfil</h2>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="md:col-span-2">
-          <label for="name" class="block mb-1 text-sm font-medium text-gray-700">Nombre:</label>
-          <input type="text" id="name" class="w-full p-2.5 border border-gray-300 rounded-md"
-            placeholder="Nombre Completo" formControlName="name">
-        </div>
+      <!-- Formulario de Edición de Perfil -->
+      <form [formGroup]="registerForm" (submit)="update()">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <!-- Nombre -->
+          <div class="md:col-span-2">
+            <label for="name" class="block mb-2 text-sm font-medium text-gray-700">Nombre:</label>
+            <input type="text" id="name" placeholder="Nombre Completo" 
+                   class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none" 
+                   formControlName="name">
+          </div>
 
-        <div class="col-span-1 flex flex-col items-center">
-          <label for="image-upload" class="block mb-1 text-sm font-medium text-gray-700">Subir Imagen:</label>
-          <input type="file" id="image-upload" class="w-full border border-gray-300 rounded-md mb-2"
-            (change)="onFileSelected($event)">
-          <div class="bg-gray-100 border border-gray-300 rounded-lg w-32 h-32 flex justify-center items-center">
-            <img src={{userDto.imageUrl}} alt="imagen de perfil" class="w-full h-full object-cover rounded-lg">
+          <!-- Imagen de Perfil -->
+          <div class="col-span-1 text-center">
+            <label for="image-upload" class="block mb-2 text-sm font-medium text-gray-700">Subir Imagen:</label>
+            <input type="file" id="image-upload" class="w-full border border-gray-300 rounded-md mb-3 p-2" 
+                   (change)="onFileSelected($event)">
+            <div class="w-32 h-32 mx-auto bg-gray-100 border border-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
+              <img [src]="userDto.imageUrl || 'assets/default-avatar.png'" alt="imagen de perfil" 
+                   class="w-full h-full object-cover rounded-lg">
+            </div>
           </div>
         </div>
-      </div>
 
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
-        <div class="md:col-span-2">
-          <label for="email" class="block mb-1 text-sm font-medium text-gray-700">Correo:</label>
-          <input type="email" id="email" class="w-full p-2.5 border border-gray-300 rounded-md"
-            placeholder="Correo Electrónico" formControlName="email">
-        </div>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-        <div>
-          <label for="nit" class="block mb-1 text-sm font-medium text-gray-700">Nit:</label>
-          <input type="number" id="nit" class="w-full p-2.5 border border-gray-300 rounded-md" placeholder="Nit"
-            formControlName="nit">
+        <!-- Correo -->
+        <div class="mt-6">
+          <label for="email" class="block mb-2 text-sm font-medium text-gray-700">Correo:</label>
+          <input type="email" id="email" placeholder="Correo Electrónico" 
+                 class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none" 
+                 formControlName="email">
         </div>
 
-        <div>
-          <label for="cui" class="block mb-1 text-sm font-medium text-gray-700">CUI:</label>
-          <input type="number" id="cui" class="w-full p-2.5 border border-gray-300 rounded-md" placeholder="CUI"
-            formControlName="cui">
+        <!-- Información Adicional -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mt-6">
+          <div>
+            <label for="nit" class="block mb-2 text-sm font-medium text-gray-700">Nit:</label>
+            <input type="number" id="nit" placeholder="Nit" 
+                   class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none" 
+                   formControlName="nit">
+          </div>
+          <div>
+            <label for="cui" class="block mb-2 text-sm font-medium text-gray-700">CUI:</label>
+            <input type="number" id="cui" placeholder="CUI" 
+                   class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none" 
+                   formControlName="cui">
+          </div>
+          <div>
+            <label for="phone" class="block mb-2 text-sm font-medium text-gray-700">Teléfono:</label>
+            <input type="number" id="phone" placeholder="Teléfono" 
+                   class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none" 
+                   formControlName="phone">
+          </div>
         </div>
 
-        <div>
-          <label for="phone" class="block mb-1 text-sm font-medium text-gray-700">Teléfono:</label>
-          <input type="number" id="phone" class="w-full p-2.5 border border-gray-300 rounded-md" placeholder="Teléfono"
-            formControlName="phone">
+        <!-- Botón Actualizar -->
+        <div class="flex justify-center mt-8">
+          <button type="submit" 
+                  class="w-full md:w-auto px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg hover:bg-blue-700 focus:outline-none focus:ring focus:ring-blue-300">
+            Actualizar
+          </button>
         </div>
-      </div>
+      </form>
 
-      <div class="flex justify-center mt-6">
-        <button class="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md">Actualizar</button>
-      </div>
-
-    </form>
-    <div>
-      <label for="password" class="block mb-1 text-sm font-medium text-gray-700">Contraseña Actual:</label>
-      <input type="password" id="password" class="w-full p-2.5 border border-gray-300 rounded-md" placeholder="********"
-        [(ngModel)]="passwordConfirm">
-    </div>
-
-    <div>
-      <label for="confirm-password" class="block mb-1 text-sm font-medium text-gray-700">Nueva Contraseña:</label>
-      <input type="password" id="confirm-password" class="w-full p-2.5 border border-gray-300 rounded-md"
-        placeholder="********" [(ngModel)]="password">
-    </div>
-
-
-    <div class="flex justify-center mt-6">
-      <button class="bg-blue-400 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md"
-        (click)="changePassword()">Actualizar</button>
-    </div>
-
-    <h3 class="text-xl font-bold text-center text-blue-700 mb-6 mt-4">Activar/Desactivar Autenticación 2F</h3>
-    <p class="text-center"> <strong> Proteje tu Cuenta:</strong> la apliacion proporciona una opcion de Autenticación de
-      2 factores,
-      agregando una segunda capa de proteccion
-      usando Google Authenticator, <strong> descarga Google Authenticator en tu móvil</strong></p>
-
-    <div>
-      @if (userDto.hasMultiFactorAuth) {
-      <p class="mt-4">Estado de A2F: <strong class="text-blue-700">Activa</strong></p>
-      <div class="flex justify-center mt-6">
-        <button class="bg-violet-400 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md"
-          (click)="desactivar()">Desactivar</button>
-      </div>
-      }@else {
-      <p class="mt-4">Estado de A2F: <strong class="font-bold text-blue-700">Inactiva</strong></p>
-      <div class="flex justify-center mt-6">
-        <button class="bg-violet-400 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-md"
-          (click)="activarA2F()">Activar</button>
-      </div>
-
-      }
-    </div>
+<!-- Sección de Autenticación de 2 Factores -->
+<div class="mt-10">
+  <!-- Encabezado -->
+  <div class="flex items-center justify-between bg-blue-700 text-white px-4 py-3 rounded-t-lg">
+    <h3 class="text-lg font-semibold">Autenticación de 2 Factores</h3>
+    <i class="fas fa-lock text-xl"></i>
   </div>
 
+  <!-- Contenedor principal -->
+  <div class="bg-white border border-gray-200 shadow-lg rounded-b-lg p-6 space-y-6">
+    <!-- Estado de la A2F y botones -->
+    <div class="flex flex-col items-center md:flex-row md:justify-between md:items-center">
+      <!-- Estado -->
+      <div class="flex items-center space-x-3 mb-4 md:mb-0">
+        <i class="fas fa-shield-alt text-2xl text-gray-500"></i>
+        <div>
+          <p class="text-sm text-gray-600">Estado de la Autenticación:</p>
+          <p class="text-lg font-semibold" [class.text-green-600]="userDto.hasMultiFactorAuth" [class.text-red-600]="!userDto.hasMultiFactorAuth">
+            @if (userDto.hasMultiFactorAuth) { Habilitado } @else { Desabilitado }
+          </p>
+        </div>
+      </div>
+
+      <!-- Botón de Activar/Desactivar -->
+      <div>
+        @if (userDto.hasMultiFactorAuth) {
+          <button class="bg-red-500 hover:bg-red-600 text-white px-6 py-2 rounded-lg font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-red-300"
+                  (click)="desactivar()">
+            Desactivar
+          </button>
+        } @else {
+          <button class="bg-blue-500 hover:bg-blue-600 text-white px-6 py-2 rounded-lg font-medium shadow-md focus:outline-none focus:ring-2 focus:ring-blue-300"
+                  (click)="activarA2F()">
+            Habilitar
+          </button>
+        }
+      </div>
+    </div>
+
+    <!-- Información explicativa -->
+    <div class="bg-gray-50 border-l-4 border-blue-600 px-4 py-3 rounded-md">
+      <h4 class="font-medium text-gray-700 mb-2">¿Por qué habilitar A2F?</h4>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        Agrega una capa adicional de seguridad a tu cuenta utilizando la autenticación de 2 factores (A2F).
+        Descarga la aplicación <strong>Google Authenticator</strong> en tu dispositivo móvil y activa esta funcionalidad para proteger tu información.
+      </p>
+    </div>
+  </div>
 </div>
 
+      <!-- Cambiar Contraseña -->
+      <h3 class="text-2xl font-semibold text-center text-blue-700 mt-10 mb-6">Cambiar Contraseña</h3>
+      <div class="space-y-4">
+        <div>
+          <label for="password" class="block mb-2 text-sm font-medium text-gray-700">Contraseña Actual:</label>
+          <input type="password" id="password" placeholder="********" 
+                 class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none" 
+                 [(ngModel)]="passwordConfirm">
+        </div>
+        <div>
+          <label for="new-password" class="block mb-2 text-sm font-medium text-gray-700">Nueva Contraseña:</label>
+          <input type="password" id="new-password" placeholder="********" 
+                 class="w-full p-3 border border-gray-300 rounded-md focus:ring focus:ring-blue-300 focus:outline-none" 
+                 [(ngModel)]="password">
+        </div>
+        <div class="flex justify-center mt-6">
+          <button (click)="changePassword()" 
+                  class="w-full md:w-auto px-6 py-3 bg-green-500 text-white font-semibold rounded-lg hover:bg-green-600 focus:outline-none focus:ring focus:ring-green-300">
+            Cambiar Contraseña
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 }

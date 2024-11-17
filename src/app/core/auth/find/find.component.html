@@ -1,16 +1,18 @@
-<section class="card">
-    <br>
-    <div class="container">
-      <h2>Recuperación de la cuenta</h2>
-      <p class="subtitle">De esta forma, sabremos que esta cuenta te pertenece</p>
-      <p>Necesitamos tu información para procesar tu recuperación.</p>
-      <p class="moresub">Introduce tu dirección de correo electrónico para poder recuperar tu cuenta.</p>
-  
-      <div class="form-group">
-        <label for="email">Correo Electrónico</label>
-        <input id="email" type="email" class="custom-input" [(ngModel)]="email">
-      </div>
-      <button class="submit-button" (click)="findAccount()">Buscar</button>
+<section class="account-recovery-section">
+  <div class="account-recovery-card">
+    <div class="account-recovery-header">
+      <h1 class="title">Recupera tu cuenta</h1>
     </div>
-  </section>
-  
+    <p class="description">
+      Ingresa tu correo electrónico para confirmar que eres el propietario de esta cuenta.
+    </p>
+    <div class="form-field">
+      <label for="email" class="form-label">Correo Electrónico</label>
+      <input id="email" type="email" class="form-input" [(ngModel)]="email" placeholder="tuemail@ejemplo.com">
+    </div>
+    <button class="action-button" (click)="findAccount()">Buscar</button>
+    <p class="footer-text">
+      ¿Necesitas ayuda? <a href="https://support.google.com/accounts/answer/7682439?hl=es-419" class="support-link">Ir al Centro de Ayuda</a>
+    </p>
+  </div>
+</section>

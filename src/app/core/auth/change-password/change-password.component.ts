@@ -46,7 +46,7 @@ export class ChangePasswordComponent {
       this.authService.recoverPasswordChange(this.NewPassword, Number(id)).subscribe({
         next: value => {
           let roleUpper = value.role.toUpperCase()
-
+          this.acctionAccept();
           this.store.dispatch(setSession({ session: value }))
           switch (roleUpper) {
             case "ADMIN":
@@ -74,25 +74,33 @@ export class ChangePasswordComponent {
 
   private msgInvalid() {
     Swal.fire({
-      icon: "info",
-      title: "Oops...",
-      text: "Debes de llenar los campos",
+      icon: "warning",
+      title: "Campos Vacios",
+      text: "Tienes que completar todos los campos",
     });
   }
 
   private msgInvalidRepeat() {
     Swal.fire({
-      icon: "question",
-      title: "Oops...",
-      text: "Las contrasenias no conciden, intenta de nuevo",
+      icon: "warning",
+      title: "Contraseñas",
+      text: "Las contraseñas no coindicen, verificar",
     });
   }
 
   private acctionInvlid() {
     Swal.fire({
-      icon: "question",
-      title: "Accion invalida",
-      text: "Para recuperar la contrasenia debe de seguir los pasos adecuados",
+      icon: "error",
+      title: "Accion No permitida",
+      text: "No se puede recuperar contraseña, ya que no esta siguiendo los pasos adecuadamente",
     });
+  }
+
+  private acctionAccept(){
+    Swal.fire({
+      icon: "success",
+      title:"Contraseña Cambiada",
+      text: "Felicidades hemos cambiado la contraseña con exito"
+    })
   }
 }

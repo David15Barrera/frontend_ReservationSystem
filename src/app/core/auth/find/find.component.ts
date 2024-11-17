@@ -22,9 +22,9 @@ export class FindComponent {
     if (!this.email) {
 
       Swal.fire({
-        icon: "question",
-        title: "Oops...",
-        text: "Ingrese el correo, por favor",
+        icon: "warning",
+        title: "Correo Electronico",
+        text: "Ingrese el correo correcto para avanzar",
       });
       return
     }
@@ -37,9 +37,9 @@ export class FindComponent {
       error: err => {
         Swal.fire({
           icon: "error",
-          title: "Correo invalido.",
-          text: "Correo no encontrado",
-          footer: '<a>Verifica el correo relacionado con su cuenta!</a>'
+          title: "Correo No Encontrado",
+          text: "No emos podido encontrar tu correo electronico",
+          footer: '<a>Verifica el correo de tu cuenta asociada</a>'
         });
       }
     })

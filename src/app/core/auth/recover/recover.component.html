@@ -1,17 +1,20 @@
-  <section class="card">
-    <br>
-    <div class="container">
-      <h2>Confirmación de reinicio de contraseña</h2>
-      <p class="subtitle">De esta forma, sabremos que esta cuenta te pertenece</p>
-      <p>Necesitamos tu información para procesar tu información</p>
-      <p class="moresub">Introduce el código que hemos enviado a tu correo electrónico.</p>
-  
-      <div class="form-group">
-        <label for="code">Código</label>
-        <input id="code" type="text" class="custom-input" [(ngModel)]="code">
-      </div>
-  
-      <button class="submit-button"  (click)="confirm()">Confirmar</button>
+<section class="password-reset-section">
+  <div class="password-reset-card">
+    <div class="password-reset-header">
+      <h1 class="title">Confirmar Código</h1>
     </div>
-  </section>
+    <p class="description">
+      Por favor, introduce el código que hemos enviado a tu correo electrónico para confirmar tu identidad.
+    </p>
+    <div class="form-field">
+      <label for="code" class="form-label">Código de Verificación</label>
+      <input id="code" type="text" class="form-input" [(ngModel)]="code" placeholder="Ejemplo: 123456">
+    </div>
+    <button class="action-button" (click)="confirm()">Confirmar</button>
+    <p class="footer-text">
+      ¿No recibiste el código? <a href="/session/find" class="resend-link">Reenviar</a>
+    </p>
+  </div>
+</section>
+
   
