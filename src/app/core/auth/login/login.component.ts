@@ -40,26 +40,27 @@ export class LoginComponent {
       password: this.loginForm.get('password')!.value!
     }
     this.authService.signin(signInModel).subscribe({
-      next: value =>{
-        this.store.dispatch(setSession({ session: value }))
-        localStorage.setItem("current_user", email)
-  
+      next: value => {
+        this.store.dispatch(setSession({ session: value }));
+        localStorage.setItem("current_user", email);
+      
         if (value) {
-          switch (value.role) {
-            case "ADMIN":
-              this.router.navigate(['manager/inicio'])
-              break
-            case "EMPLEADO":
-              this.router.navigate(['manager/inicio'])
-              break
-            case "CLIENTE":
-              this.router.navigate(['user/dashboard'])
-              break
+          // Si el rol es ADMIN, redirige a una ruta específica
+          if (value.role === "ADMIN") {
+            this.router.navigate(['manager/inicio']);
+          } 
+          // Si el rol es CLIENTE, redirige a una ruta diferente
+          else if (value.role === "CLIENTE") {
+            this.router.navigate(['user/dashboard']);
+          }
+          else{
+            console.log("Redirigiendo a else como otro rol:", value.role);
+            this.router.navigate(['manager/inicio'])
           }
         } else {
-          this.router.navigate(['session/signin-mfa'])
+          this.router.navigate(['session/signin-mfa']);
         }
-      },
+      },      
       error: err =>{
         Swal.fire({
           icon: "info",

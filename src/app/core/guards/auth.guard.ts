@@ -10,7 +10,7 @@ export const authGuard: CanActivateFn = (route, state) => {
   const session = localStorage.getItem('session')
   if (session != null) {
       const sessionObj = JSON.parse(session)
-      if (sessionObj && (sessionObj.role == "ADMIN" || sessionObj.role == "EMPLEADO")) {
+      if (sessionObj) {
           return true
       }
   }

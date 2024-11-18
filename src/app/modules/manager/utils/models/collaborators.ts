@@ -8,6 +8,7 @@ export interface RoleDTO {
     id: number;
     name: string;
     description: string
+    permissions?: string[]; 
 }
 
 export interface UserDto {

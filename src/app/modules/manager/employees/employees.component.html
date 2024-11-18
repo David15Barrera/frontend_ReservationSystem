@@ -5,26 +5,26 @@
 
   <div class="filter-buttons mb-4">
     <label for="roleFilter" class="block text-gray-700 font-medium mb-2">Filtrar por rol</label>
-    <select id="roleFilter" (change)="onRoleChange($event)" class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200">
+    <select id="roleFilter" (change)="onRoleChange($event)" class="w-full p-2 border border-gray-300 rounded-md focus:ring focus:ring-indigo-200 text-xs md:text-sm">
       <option *ngFor="let item of roles" [value]="item.id">{{ item.name }}</option>
     </select>
   </div>
 
   <div class="users-table overflow-x-auto">
-    <table class="min-w-full bg-white border border-gray-200 rounded-lg shadow-lg">
-      <thead class="bg-gray-200 text-gray-700 uppercase text-sm leading-normal">
+    <table class="w-full bg-white border border-gray-200 rounded-lg shadow-lg table-auto">
+      <thead class="bg-gray-200 text-gray-700 uppercase text-xs sm:text-sm leading-normal">
         <tr>
-          <th class="py-3 px-6 text-left font-semibold">Nombre</th>
-          <th class="py-3 px-6 text-left font-semibold">Rol</th>
-          <th class="py-3 px-6 text-left font-semibold">Permisos</th>
+          <th class="py-2 px-2 sm:px-4 text-left font-semibold">Nombre</th>
+          <th class="py-2 px-2 sm:px-4 text-left font-semibold">Rol</th>
+          <th class="py-2 px-2 sm:px-4 text-left font-semibold">Permisos</th>
         </tr>
       </thead>
-      <tbody class="text-gray-600 text-sm font-light">
+      <tbody class="text-gray-600 text-xs sm:text-sm font-light">
         <tr *ngFor="let element of users" class="border-b border-gray-200 hover:bg-gray-100">
-          <td class="py-3 px-6 text-left">{{ element.name }}</td>
-          <td class="py-3 px-6 text-left">{{ element.role }}</td>
-          <td class="py-3 px-6 text-left">
-            <button (click)="openDialog(element)" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none">
+          <td class="py-2 px-2 sm:px-4 text-left">{{ element.name }}</td>
+          <td class="py-2 px-2 sm:px-4 text-left">{{ element.role }}</td>
+          <td class="py-2 px-2 sm:px-4 text-left">
+            <button (click)="openDialog(element)" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none text-xs sm:text-sm">
               Editar
             </button>
           </td>
@@ -33,3 +33,51 @@
     </table>
   </div>
 </div>
+
+<div class="roles-container p-6 bg-gray-100 rounded-lg shadow-lg mt-6">
+  <div class="mb-4">
+    <h2 class="text-2xl font-bold mb-4">Administración de Roles</h2>
+    <button (click)="openRoleDialog()" class="mb-4 px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 text-xs sm:text-sm">
+      Crear Rol
+    </button>
+  </div>
+
+  <div class="roles-table overflow-x-auto">
+    <table class="w-full bg-white border border-gray-200 rounded-lg shadow-lg table-auto">
+      <thead class="bg-gray-200 text-gray-700 uppercase text-xs sm:text-sm leading-normal">
+        <tr>
+          <th class="py-2 px-2 sm:px-4 text-left font-semibold">Rol</th>
+          <th class="py-2 px-2 sm:px-4 text-left font-semibold">Descripción</th>
+          <th class="py-2 px-2 sm:px-4 text-left font-semibold">Permisos</th>
+          <th class="py-2 px-2 sm:px-4 text-left font-semibold">Acciones</th>
+        </tr>
+      </thead>
+      <tbody class="text-gray-600 text-xs sm:text-sm font-light">
+        <tr *ngFor="let role of roles" class="border-b border-gray-200 hover:bg-gray-100">
+          <td class="py-2 px-2 sm:px-4 text-left">{{ role.name }}</td>
+          <td class="py-2 px-2 sm:px-4 text-left">{{ role.description }}</td>
+          <td class="py-2 px-2 sm:px-4 text-left">
+            <button (click)="openPermissionsDialog(role)" class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 text-xs sm:text-sm">
+              Editar Permisos
+            </button>
+          </td>
+          <td class="py-2 px-2 sm:px-4 text-left space-x-2">
+            <button 
+              (click)="deleteRole(role.id)" 
+              class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 text-xs sm:text-sm" 
+              [disabled]="role.name === 'ADMIN' || role.name === 'CLIENTE'">
+              Eliminar
+            </button>
+            <button 
+              (click)="openEditRoleDialog(role)" 
+              class="px-4 py-2 bg-yellow-500 text-white rounded-md hover:bg-yellow-600 text-xs sm:text-sm"
+              [disabled]="role.name === 'ADMIN' || role.name === 'CLIENTE'">
+              Editar
+            </button>
+          </td>          
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
