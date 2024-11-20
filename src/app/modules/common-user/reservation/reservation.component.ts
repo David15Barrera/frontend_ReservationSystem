@@ -85,12 +85,14 @@ export class ReservationComponent implements OnInit {
 
   cancelAppointment(appointment: AppointmentDto) {
     const now = new Date();
-    const endDate = new Date(appointment.endDate);
-    const timeRemaining = endDate.getTime() - now.getTime();
+    const startDate = new Date(appointment.startDate); // Cambiado de endDate a startDate
+    const timeRemaining = startDate.getTime() - now.getTime(); // Calcular tiempo antes de la cita
 
     Swal.fire({
         title: '¿Estás seguro?',
-        text: "¡No podrás revertir esto!",
+        text: timeRemaining <= 3600000
+            ? 'Cancelar dentro de 1 hora antes de su cita implica una multa según nuestras políticas.'
+            : '¡No podrás revertir esto!',
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -98,15 +100,21 @@ export class ReservationComponent implements OnInit {
         confirmButtonText: 'Sí, cancelar'
     }).then((result) => {
         if (result.isConfirmed) {
-            // Si queda menos de una hora, usamos `canceled`
+            // Determinar el observable según el tiempo restante
             const cancelObservable = timeRemaining <= 3600000
-                ? this.appointmentService.canceled(appointment.id)
-                : this.appointmentService.cancelAppointment(appointment.id);
+                ? this.appointmentService.canceled(appointment.id) // Lógica especial para menos de 1 hora
+                : this.appointmentService.cancelAppointment(appointment.id); // Lógica estándar para cancelación
 
             cancelObservable.subscribe({
                 next: () => {
-                    Swal.fire('Cancelado!', 'La cita ha sido cancelada.', 'success');
-                    this.loadUserAppointments();
+                    Swal.fire(
+                        'Cancelado!',
+                        timeRemaining <= 3600000
+                            ? 'La cita ha sido cancelada. Se aplicará una multa según nuestras políticas.'
+                            : 'La cita ha sido cancelada.',
+                        'success'
+                    );
+                    this.loadUserAppointments(); // Recargar citas del usuario
                 },
                 error: (error) => {
                     Swal.fire('Error!', 'No se pudo cancelar la cita.', 'error');
@@ -116,6 +124,7 @@ export class ReservationComponent implements OnInit {
         }
     });
 }
+
 
 
 translateStatus(status: string): string {
