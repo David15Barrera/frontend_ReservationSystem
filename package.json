@@ -31,6 +31,7 @@
     "@schedule-x/theme-default": "^2.4.0",
     "@swimlane/ngx-charts": "^20.5.0",
     "angularx-qrcode": "^18.0.1",
+    "d3": "^7.9.0",
     "qrcode": "^1.5.4",
     "rxjs": "~7.8.0",
     "sweetalert2": "^11.14.2",

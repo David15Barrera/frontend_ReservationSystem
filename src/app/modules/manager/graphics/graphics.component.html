@@ -1,0 +1,275 @@
+<main class="p-6 bg-gray-50">
+    <!-- Cabecera y Botón -->
+    <div class="text-center mb-6">
+        <h2 class="text-4xl font-semibold text-gray-800">Gráficas Generales</h2>
+        <p class="text-sm text-gray-600 mt-2">
+          Nota: Presione el botón "Filtrar" para visualizar las gráficas.
+        </p>
+      </div>
+
+    <div class="flex justify-between items-center mb-6">          
+  
+      </div>
+    
+   
+      <!-- Tabs -->
+      <div class="mb-6">
+        <div class="flex justify-center">
+          <button
+            *ngFor="let tab of tabs; let i = index"
+            (click)="selectTab(i)"
+            class="px-4 py-2 text-sm font-medium text-gray-700 border-b-2"
+            [class.border-blue-500]="activeTab === i"
+            [class.text-blue-500]="activeTab === i"
+            [class.text-gray-400]="activeTab !== i"
+            [class.border-transparent]="activeTab !== i"
+          >
+            {{ tab.label }}
+          </button>
+        </div>
+      </div>
+    
+      <!-- Reportes -->
+      <div class="report-section">
+        <div *ngIf="activeTab === 0">
+            <main class="p-6 bg-gray-50">
+                <!-- Header -->
+                <div class="flex justify-between items-center bg-white shadow-md p-4 rounded-md mb-6">
+                  <h2 class="text-xl font-bold text-gray-700">Gráfica General de Citas</h2>
+                  <button 
+                    class="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition"
+                    (click)="realizarReportCitas()">
+                    Filtrar
+                  </button>
+                </div>
+              
+                <!-- Filter Bar -->
+                <div class="bg-white shadow-md p-4 rounded-md mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="flex flex-col">
+                    <label for="filter-type" class="text-gray-600 font-medium mb-1">Filtrar por:</label>
+                    <select 
+                      id="filter-type" 
+                      name="filter-type" 
+                      [(ngModel)]="selectedFilter" 
+                      (change)="applyFiltersCitas()"
+                      class="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                      <option value="all">TODOS</option>
+                      <option value="reserved">RESERVADOS</option>
+                      <option value="completed">COMPLETADOS</option>
+                      <option value="canceled">CANCELADOS</option>
+                    </select>
+                  </div>
+              
+                  <div class="flex flex-col">
+                    <label for="start-date" class="text-gray-600 font-medium mb-1">Fecha de inicio:</label>
+                    <input 
+                      id="start-date" 
+                      type="date" 
+                      name="start-date" 
+                      [(ngModel)]="startDate" 
+                      (change)="applyFiltersCitas()"
+                      class="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                  </div>
+              
+                  <div class="flex flex-col">
+                    <label for="end-date" class="text-gray-600 font-medium mb-1">Fecha final:</label>
+                    <input 
+                      id="end-date" 
+                      type="date" 
+                      name="end-date" 
+                      [(ngModel)]="endDate" 
+                      (change)="applyFiltersCitas()"
+                      class="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                  </div>
+                </div>
+              
+                <!-- Chart Section -->
+                <div *ngIf="chartData.length > 0" class="flex justify-center mb-6">
+                  <ngx-charts-advanced-pie-chart
+                    [results]="chartData"
+                    [view]="[800, 500]"
+                    [scheme]="colorScheme">
+                  </ngx-charts-advanced-pie-chart>
+                </div>
+              
+                <!-- Table -->
+                <div class="bg-white shadow-md p-4 rounded-md overflow-auto">
+                  <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-100 border-b">
+                      <tr>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Cliente</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Servicio</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Fecha</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Hora</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Empleado</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Estado</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of appointmenReports" class="border-b">
+                        <td class="py-2 px-4 text-gray-600">{{item.cliente}}</td>
+                        <td class="py-2 px-4 text-gray-600">{{item.servicio}}</td>
+                        <td class="py-2 px-4 text-gray-600">{{item.fecha}}</td>
+                        <td class="py-2 px-4 text-gray-600">{{item.horaInicio}}</td>
+                        <td class="py-2 px-4 text-gray-600">{{item.empleado}}</td>
+                        <td class="py-2 px-4 text-gray-600">{{item.estado}}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="5" class="py-2 px-4 text-gray-700 font-medium text-right">Total:</td>
+                        <td colspan="2" class="py-2 px-4 text-gray-700 font-bold">Q {{total}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </main>
+              
+        </div>
+    
+        <div *ngIf="activeTab === 1">
+            <main class="p-6 bg-gray-50">
+                <!-- Header -->
+                <div class="flex justify-between items-center bg-white shadow-md p-4 rounded-md mb-6">
+                  <h2 class="text-xl font-bold text-gray-700">Gráfico General de Servicios</h2>
+                  <button 
+                    class="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition"
+                    (click)="realizarReportService()">
+                    Filtrar
+                  </button>
+                </div>
+              
+                <!-- Filter Bar -->
+                <div class="bg-white shadow-md p-4 rounded-md mb-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div class="flex flex-col">
+                    <label for="filter-type" class="text-gray-600 font-medium mb-1">Filtrar por:</label>
+                    <select 
+                      id="filter-type" 
+                      name="filter-type" 
+                      [(ngModel)]="selectedFilter" 
+                      (change)="applyFiltersService()"
+                      class="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                      <option value="Todos">TODOS</option>
+                      <option value="Disponible">No Disponibles</option>
+                      <option value="No-Disponibles">Disponibles</option>
+                    </select>
+                  </div>
+              
+                  <div class="flex flex-col">
+                    <label for="start-date" class="text-gray-600 font-medium mb-1">Fecha de inicio:</label>
+                    <input 
+                      id="start-date" 
+                      type="date" 
+                      name="start-date" 
+                      [(ngModel)]="startDate" 
+                      (change)="applyFiltersService()"
+                      class="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                  </div>
+              
+                  <div class="flex flex-col">
+                    <label for="end-date" class="text-gray-600 font-medium mb-1">Fecha final:</label>
+                    <input 
+                      id="end-date" 
+                      type="date" 
+                      name="end-date" 
+                      [(ngModel)]="endDate" 
+                      (change)="applyFiltersService()"
+                      class="border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500">
+                  </div>
+                </div>
+              
+                <!-- Chart Section -->
+                <div *ngIf="chartData.length > 0" class="flex justify-center mb-6">
+                  <ngx-charts-bar-vertical
+                    [view]="[700, 400]"
+                    [scheme]="colorScheme"
+                    [results]="chartData"
+                    [xAxis]="true"
+                    [yAxis]="true"
+                    [legend]="true"
+                    [showDataLabel]="true">
+                  </ngx-charts-bar-vertical>
+                </div>
+              
+                <!-- Table -->
+                <div class="bg-white shadow-md p-4 rounded-md overflow-auto">
+                  <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-100 border-b">
+                      <tr>
+                        <th class="py-2 px-4 text-gray-700 font-medium">#</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Nombre</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Descripción</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Duración (H)</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Estado</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Precio Q</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Citas</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of serviceReport; let i = index" class="border-b">
+                        <td class="py-2 px-4 text-gray-600">{{ i + 1 }}</td>
+                        <td class="py-2 px-4 text-gray-600">{{ item.name }}</td>
+                        <td class="py-2 px-4 text-gray-600">{{ item.description }}</td>
+                        <td class="py-2 px-4 text-gray-600">{{ item.duration }}</td>
+                        <td class="py-2 px-4 text-gray-600">{{ translateStatusService(item.status) }}</td>
+                        <td class="py-2 px-4 text-gray-600">{{ item.price }}</td>
+                        <td class="py-2 px-4 text-gray-600">{{ item.citas }}</td>
+                      </tr>
+                      <tr>
+                        <td colspan="6" class="py-2 px-4 text-gray-700 font-medium text-right">Total:</td>
+                        <td class="py-2 px-4 text-gray-700 font-bold">{{ total }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </main>
+              
+        </div>
+    
+        <div *ngIf="activeTab === 2">
+            <main class="p-6 bg-gray-50">
+                <!-- Header -->
+                <div class="flex justify-between items-center bg-white shadow-md p-4 rounded-md mb-6">
+                  <h2 class="text-xl font-bold text-gray-700">Gráfica General de Empleados Activos</h2>
+                  <button 
+                    class="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition"
+                    (click)="realizarReportEmpleado()">
+                    Mostrar Gráfica
+                  </button>
+                </div>
+              
+                <!-- Chart Section -->
+                <div *ngIf="chartData.length > 0" class="flex justify-center mb-6">
+                  <ngx-charts-bar-vertical
+                    [results]="chartData"
+                    [xAxis]="true"
+                    [yAxis]="true"
+                    [legend]="true"
+                    [showDataLabel]="true"
+                    [animations]="true">
+                  </ngx-charts-bar-vertical>
+                </div>
+              
+                <!-- Table -->
+                <div class="bg-white shadow-md p-4 rounded-md overflow-auto">
+                  <table class="w-full text-left border-collapse">
+                    <thead class="bg-gray-100 border-b">
+                      <tr>
+                        <th class="py-2 px-4 text-gray-700 font-medium">#</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Nombre</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Email</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">CUI</th>
+                        <th class="py-2 px-4 text-gray-700 font-medium">Cantidad Citas</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr *ngFor="let item of clientReportEmp; let i = index" class="border-b hover:bg-gray-50">
+                        <td class="py-2 px-4 text-gray-600">{{ i + 1 }}</td>
+                        <td class="py-2 px-4 text-gray-600">{{ item.Nombre }}</td>
+                        <td class="py-2 px-4 text-gray-600">{{ item.email }}</td>
+                        <td class="py-2 px-4 text-gray-600">{{ item.cui }}</td>
+                        <td class="py-2 px-4 text-gray-600">{{ item.Cantidad }}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </main>
+              

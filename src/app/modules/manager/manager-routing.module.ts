@@ -15,6 +15,7 @@ import { ReportCitasComponent } from './reports/report-citas/report-citas.compon
 import { ReportClientesComponent } from './reports/report-clientes/report-clientes.component';
 import { ReportEmpleadosComponent } from './reports/report-empleados/report-empleados.component';
 import { ReportServicesComponent } from './reports/report-services/report-services.component';
+import { GraphicsComponent } from './graphics/graphics.component';
 
 const routes: Routes = [
   {
@@ -58,6 +59,9 @@ const routes: Routes = [
   { 
     path:'reportes/servicios', component: ReportServicesComponent
   },
+  {
+    path:'graficos', component: GraphicsComponent
+  }
 ];
 
 @NgModule({

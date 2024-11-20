@@ -8,6 +8,7 @@ import { BusinessComponent } from './business/business.component';
 import { ClientsComponent } from './clients/clients.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { SettingsComponent } from './settings/settings.component';
+import { GraphicsComponent } from './graphics/graphics.component';
 
 @NgModule({
   declarations: [],
@@ -19,7 +20,8 @@ import { SettingsComponent } from './settings/settings.component';
     BusinessComponent,
     ClientsComponent,
     EmployeesComponent,
-    SettingsComponent
+    SettingsComponent,
+    GraphicsComponent
   ]
 })
 export class ManagerModule { }
