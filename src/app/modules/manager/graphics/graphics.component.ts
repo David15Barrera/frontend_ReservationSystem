@@ -43,7 +43,9 @@ export class GraphicsComponent   implements OnInit {
   employees: any[] = [];
   cancellarions: any[] = [];
 
-
+  chartWidth = Math.min(window.innerWidth * 0.9, 600);
+  chartHeight = 300;  
+  
   selectedFilter = 'all'; // Filtro de citas
   selectedEmployeeFilter = 'Todos'; // Filtro de empleados
   selectedServiceFilter = 'Todos'; // Filtro de servicios
