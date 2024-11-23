@@ -141,44 +141,67 @@ export class AppointmentsComponent {
   }
 
   register() {
-
-    const date = this.calendarControls.getDate()
-
-    let endDate = this.calcularEndDate(this.registerForm.value.startDate, this.serviceTmp?.duration || '')
-
-    const startDate = this.formatearFechaParaBackend(date, this.registerForm.value.startDate)
-
-    endDate = this.formatearFechaParaBackend(date, endDate)
-
-    this.registerForm.value.endDate = endDate
-    this.registerForm.value.startDate = startDate
-    this.registerForm.value.service = Number(this.registerForm.value.service)
-
-    //validar si   se puede elegir empleado o hacerlo random
-    if (!this.businessConfiguration.employeeElection) {
-      this.registerForm.value.employeeId = Number(this.getRandomEmployee()?.id || 1)
-    } else {
-      this.registerForm.value.employeeId = Number(this.registerForm.value.employeeId)
+    const date = this.calendarControls.getDate();
+  
+    // Calcular las fechas de inicio y fin de la nueva cita
+    let endDate = this.calcularEndDate(this.registerForm.value.startDate, this.serviceTmp?.duration || '');
+    const startDate = this.formatearFechaParaBackend(date,   this.registerForm.value.startDate);
+    endDate = this.formatearFechaParaBackend(date, endDate);
+  
+    // Validar conflicto de horarios
+    const hasConflict = this.appointments.some(appointment => {
+      const existingStart = new Date(appointment.startDate).getTime();
+      const existingEnd = new Date(appointment.endDate).getTime();
+      const newStart = new Date(startDate).getTime();
+      const newEnd = new Date(endDate).getTime();
+  
+      // Verificar si los horarios se solapan o hay uno antes o durante
+      return (
+        (newStart >= existingStart && newStart < existingEnd) || // El inicio de la nueva cita cae dentro de una cita existente
+        (newEnd > existingStart && newEnd <= existingEnd) ||    // El fin de la nueva cita cae dentro de una cita existente
+        (newStart <= existingStart && newEnd >= existingEnd)    // La nueva cita abarca completamente una cita existente
+      );
+    });
+  
+    if (hasConflict) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Conflicto de horario',
+        text: 'Ya tienes una cita en este horario. Por favor, selecciona otro.',
+      });
+      return;
     }
-
-    //TODO: hacer resto de validaciones, como no escoger una hora fuera del horario del dia permitido
-
-    //listo para enviar
+  
+    // Asignar valores adicionales al formulario
+    this.registerForm.value.endDate = endDate;
+    this.registerForm.value.startDate = startDate;
+    this.registerForm.value.service = Number(this.registerForm.value.service);
+  
+    // Seleccionar empleado aleatorio si no se permite elegir uno
+    if (!this.businessConfiguration.employeeElection) {
+      this.registerForm.value.employeeId = Number(this.getRandomEmployee()?.id || 1);
+    } else {
+      this.registerForm.value.employeeId = Number(this.registerForm.value.employeeId);
+    }
+  
+    // Enviar la cita al backend
     this.appointmentService.createAppoinment(this.registerForm.value).subscribe({
       next: value => {
-        this.msgOK()
-        this.getAllAppointment()
-        this.closeModal()
+        this.msgOK();
+        this.getAllAppointment(); // Actualizar la lista de citas
+        this.closeModal();
       },
       error: err => {
-        console.log(err);
-        this.msgError()
-        this.closeModal()
-      }
-    })
-
-    console.log(this.registerForm.value);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo crear la cita. Inténtalo nuevamente.',
+        });
+        this.closeModal();
+      },
+    });
   }
+  
 
   async getBussinesGeneral(): Promise<void> {
     return firstValueFrom(this.businessHoursService.getBussinesConfiguration())
