@@ -143,6 +143,16 @@ export class AppointmentsComponent {
   register() {
     const date = this.calendarControls.getDate();
   
+    // Validar que todos los campos están completos
+    if (!this.registerForm.valid) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Campos vacíos',
+        text: 'Por favor, complete todos los campos antes de continuar.',
+      });
+      return; // No continuar si el formulario no es válido
+    }
+
     // Calcular las fechas de inicio y fin de la nueva cita
     let endDate = this.calcularEndDate(this.registerForm.value.startDate, this.serviceTmp?.duration || '');
     const startDate = this.formatearFechaParaBackend(date,   this.registerForm.value.startDate);

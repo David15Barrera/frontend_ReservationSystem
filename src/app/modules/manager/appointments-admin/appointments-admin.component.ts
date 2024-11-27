@@ -9,11 +9,12 @@ import { employeDto } from '../../common-user/utils/models/employes.dto';
 import { appointmentReportDto } from '../utils/models/appointment.dto';
 import { firstValueFrom } from 'rxjs';
 import Swal from 'sweetalert2';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-appointments-admin',
   standalone: true,
-  imports: [],
+  imports: [FormsModule],
   templateUrl: './appointments-admin.component.html',
   styleUrl: './appointments-admin.component.scss'
 })
@@ -27,6 +28,39 @@ export class AppointmentsAdminComponent {
   role = ''
   id = 1
   dropdownStates: boolean[] = [];
+
+  // Nueva propiedad para el filtro
+  searchTerm: string = '';
+  selectedFilter = ''; // Filtro seleccionado
+  filteredReports: appointmentReportDto[] = [];
+  selectedState: string = ''; // Estado seleccionado
+
+
+  filteredAppointments(): appointmentReportDto[] {
+    return this.appointmenReports.filter((item) => {
+      // Filtro por término de búsqueda
+      const matchesSearchTerm = [item.fecha, item.estado, item.servicio]
+        .some((field) => field.toLowerCase().includes(this.searchTerm.toLowerCase()));
+  
+      // Filtro por acciones
+      const matchesActionFilter =
+        this.selectedFilter === 'sinAcciones'
+          ? item.estado !== 'RESERVADO'
+          : this.selectedFilter === 'conFiltro'
+          ? item.estado === 'RESERVADO'
+          : true; // Si no hay filtro seleccionado, muestra todo
+  
+      // Filtro por estado
+      const matchesStateFilter = this.selectedState
+        ? item.estado === this.selectedState
+        : true; // Si no hay estado seleccionado, muestra todo
+  
+      // Combinar todos los filtros
+      return matchesSearchTerm && matchesActionFilter && matchesStateFilter;
+    });
+  }
+  
+
 
   private readonly serviceService = inject(ServiceService)
   private readonly employeService = inject(EmployeeService)
@@ -42,6 +76,34 @@ export class AppointmentsAdminComponent {
     await this.getCustomers()
     this.prepararAppointmesReport();
   }
+
+  filterReports() {
+    let reports = [...this.appointmenReports];
+  
+    // Filtro por estado
+    if (this.selectedState) {
+      reports = reports.filter((item) => item.estado === this.selectedState);
+    }
+  
+    // Filtro por acciones
+    if (this.selectedFilter === 'sinAcciones') {
+      reports = reports.filter((item) => item.estado !== 'RESERVADO');
+    } else if (this.selectedFilter === 'conFiltro') {
+      reports = reports.filter((item) => item.estado === 'RESERVADO');
+    }
+  
+    // Filtro por término de búsqueda
+    if (this.searchTerm) {
+      reports = reports.filter((item) =>
+        [item.fecha, item.estado, item.servicio].some((field) =>
+          field.toLowerCase().includes(this.searchTerm.toLowerCase())
+        )
+      );
+    }
+  
+    this.filteredReports = reports;
+  }
+  
 
   getAllAppointment(): Promise<void> {
     return new Promise((resolve) => {
@@ -254,5 +316,7 @@ export class AppointmentsAdminComponent {
       icon: "info"
     });
   }
+
+
 
 }

@@ -145,3 +145,34 @@
     padding: 6px;
   }
 }
+
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+div.mb-4 {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+select {
+  &:hover {
+    background-color: #f0f4ff; // Un color de fondo sutil
+  }
+}
+
+input[type="text"] {
+  &:hover {
+    border-color: #60a5fa; // Cambia el borde al color azul claro
+  }
+  &:focus {
+    background-color: #f9fafb; // Fondo más claro al enfocar
+  }
+}

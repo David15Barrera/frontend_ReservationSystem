@@ -1,27 +1,70 @@
 <div class="container mx-auto p-5">
-    @if (role === 'ADMIN') {
-        <h1 class="text-2xl font-bold mb-4 text-blue-500 text-center">Todas las Citas</h1>
-      } @else {
-        <h1 class="text-2xl font-bold mb-4 text-blue-500 text-center">Mis Citas</h1>
-      }
-      
-    <div class="overflow-x-auto">
-      <table class="min-w-full bg-white border border-gray-300 mb-4 table-auto">
-        <thead>
-          <tr class="bg-gray-100">
-            <th class="border px-2 py-2 text-left text-xs text-center">Fecha </th>
-            <th class="border px-2 py-2 text-left text-xs">Hora de Inicio </th>
-            <th class="border px-2 py-2 text-left text-xs">Cliente </th>
-            <th class="border px-2 py-2 text-left text-xs">Estado </th>
-            <th class="border px-2 py-2 text-left text-xs">Servicio </th>
-            @if (role === 'ADMIN') {
-              <th class="border px-2 py-2 text-left text-xs">Empleado </th>
-            }
-            <th class="border px-2 py-2 text-left text-xs">Acciones </th>
-          </tr>
-        </thead>
-        <tbody>
-          @for (item of appointmenReports; track $index) {
+  @if (role === 'ADMIN') {
+    <h1 class="text-2xl font-bold mb-4 text-blue-500 text-center">Todas las Citas</h1>
+  } @else {
+    <h1 class="text-2xl font-bold mb-4 text-blue-500 text-center">Mis Citas</h1>
+  }
+
+<!-- Filtro de acciones -->
+<div class="mb-4 space-y-4 md:flex md:space-y-0 md:space-x-4 items-center">
+  <div>
+    <label for="filterActions" class="block text-sm font-bold text-gray-700">Filtrar acciones:</label>
+    <select
+      id="filterActions"
+      class="p-2 border border-gray-300 rounded-md transition-transform duration-200 hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+      [(ngModel)]="selectedFilter"
+      (change)="filterReports()"
+    >
+      <option value="">Todas</option>
+      <option value="sinAcciones">Sin acciones</option>
+      <option value="conFiltro"> Citas</option>
+    </select>
+  </div>
+
+  <div>
+    <label for="filterState" class="block text-sm font-bold text-gray-700">Filtrar por estado:</label>
+    <select
+      id="filterState"
+      class="p-2 border border-gray-300 rounded-md transition-transform duration-200 hover:scale-105 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+      [(ngModel)]="selectedState"
+      (change)="filterReports()"
+    >
+      <option value="">Todos</option>
+      <option value="RESERVADO">Reservado</option>
+      <option value="COMPLETADO">Completado</option>
+      <option value="CANCELADO">Cancelado</option>
+    </select>
+  </div>
+</div>
+
+<!-- Campo de búsqueda -->
+<div class="flex justify-end mb-4">
+  <input
+    type="text"
+    placeholder="Buscar..."
+    class="border border-gray-300 rounded-md px-4 py-2 text-sm transition-shadow duration-200 hover:shadow-lg focus:ring-2 focus:ring-blue-500 focus:outline-none"
+    [(ngModel)]="searchTerm"
+  />
+</div>
+
+
+  <div class="overflow-x-auto">
+    <table class="min-w-full bg-white border border-gray-300 mb-4 table-auto">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="border px-2 py-2 text-left text-xs text-center">Fecha </th>
+          <th class="border px-2 py-2 text-left text-xs">Hora de Inicio </th>
+          <th class="border px-2 py-2 text-left text-xs">Cliente </th>
+          <th class="border px-2 py-2 text-left text-xs">Estado </th>
+          <th class="border px-2 py-2 text-left text-xs">Servicio </th>
+          @if (role === 'ADMIN') {
+            <th class="border px-2 py-2 text-left text-xs">Empleado </th>
+          }
+          <th class="border px-2 py-2 text-left text-xs">Acciones </th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of filteredAppointments(); track $index) {
           <tr class="border-b hover:bg-gray-100">
             <td class="border px-2 py-2 text-sm" data-label="Fecha">{{ item.fecha }}</td>
             <td class="border px-2 py-2 text-sm" data-label="Hora de Inicio">{{ item.horaInicio }}</td>
@@ -35,7 +78,7 @@
               @if (item.estado === 'RESERVADO') {
                 <div class="dropdown relative">
                   <button class="dropdown-button" (click)="toggleDropdown($index)">
-                    Filtrar por categoría
+                    ACCIONES
                   </button>
                   <div class="dropdown-content absolute hidden" [class.show]="dropdownStates[$index]">
                     <a href="javascript:void(0)" (click)="completed(item.appointment.id)">Completado</a>
@@ -47,15 +90,15 @@
               }
             </td>
           </tr>
-          }
-        </tbody>
-      </table>
-    </div> 
-    <!-- Mensaje si no hay citas -->
-     @if(appointmenReports.length === 0){
-        <div class="text-center mt-6 text-gray-600">
-            <p>No hay citas disponibles.</p>
-          </div>
-     }
+        }
+      </tbody>
+    </table>
   </div>
-  
+
+  <!-- Mensaje si no hay citas -->
+  @if (filteredAppointments().length === 0) {
+    <div class="text-center mt-6 text-gray-600">
+      <p>No hay citas disponibles.</p>
+    </div>
+  }
+</div>
