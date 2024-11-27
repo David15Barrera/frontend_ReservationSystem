@@ -16,6 +16,7 @@ import { ReportClientesComponent } from './reports/report-clientes/report-client
 import { ReportEmpleadosComponent } from './reports/report-empleados/report-empleados.component';
 import { ReportServicesComponent } from './reports/report-services/report-services.component';
 import { GraphicsComponent } from './graphics/graphics.component';
+import { GraficosComponent } from './graficos/graficos.component';
 
 const routes: Routes = [
   {

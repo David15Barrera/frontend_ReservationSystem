@@ -1,0 +1,60 @@
+<div class="container">
+    <h2 class="text-2xl font-bold text-center mb-8">Estadísticas de Citas y Empleados</h2>
+    
+    <!-- Contenedor de gráficos con layout de 2x2 -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+      
+      <!-- Gráfico de Barras (Citas por semana) -->
+      <div class="chart-container">
+        <h3 class="text-xl font-semibold text-center mb-4">Citas por Semana</h3>
+        <ngx-charts-bar-vertical
+          [results]="appointmentsDataBar"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [showDataLabel]="true"
+          [scheme]="colorScheme"
+          [view]="[500, 300]"
+        ></ngx-charts-bar-vertical>
+      </div>
+  
+      <!-- Gráfico de Líneas (Tendencia de Citas) -->
+      <div class="chart-container">
+        <h3 class="text-xl font-semibold text-center mb-4">Tendencia de Citas</h3>
+        <ngx-charts-line-chart
+          [results]="appointmentsDataLine"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [scheme]="colorScheme"
+          [view]="[500, 300]"
+        ></ngx-charts-line-chart>
+      </div>
+  
+      <!-- Gráfico Circular (Empleados por Rol) -->
+      <div class="chart-container">
+        <h3 class="text-xl font-semibold text-center mb-4">Empleados por Rol</h3>
+        <ngx-charts-pie-chart
+          [results]="employeesDataPie"
+          [legend]="true"
+          [doughnut]="true"
+          [scheme]="colorScheme"
+          [view]="[300, 300]"
+        ></ngx-charts-pie-chart>
+      </div>
+  
+      <!-- Gráfico de Áreas (Volumen de Citas por Mes) -->
+      <div class="chart-container">
+        <h3 class="text-xl font-semibold text-center mb-4">Volumen de Citas por Mes</h3>
+        <ngx-charts-area-chart
+          [results]="appointmentsDataArea"
+          [xAxis]="true"
+          [yAxis]="true"
+          [legend]="true"
+          [scheme]="colorScheme"
+          [view]="[500, 300]"
+        ></ngx-charts-area-chart>
+      </div>
+    </div>
+  </div>
+  

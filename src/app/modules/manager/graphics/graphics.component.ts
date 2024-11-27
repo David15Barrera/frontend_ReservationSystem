@@ -54,6 +54,11 @@ export class GraphicsComponent   implements OnInit {
   startDate = '2000-01-01';
   endDate = '2099-12-31';
 
+  // Nuevas variables
+  clientDistributionChartData: any[] = [];
+  cancellationChartData: any[] = [];
+  cancellationRate: number = 0;
+
   private readonly serviceService = inject(ServiceService);
   private readonly appointmentService = inject(AppointmentService);
   private readonly cancellationService = inject(CancellarionService)
@@ -72,6 +77,21 @@ export class GraphicsComponent   implements OnInit {
     domain: ['#5AA454', '#A10A28', '#C7B42C', '#AAAAAA']
   };
 
+// Configuración de colores para las gráficas
+clientDistributionColorScheme: Color = {
+  name: 'clientDistribution',
+  selectable: true,
+  group: ScaleType.Ordinal,
+  domain: ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b']
+};
+
+cancellationColorScheme: Color = {
+  name: 'cancellationRate',
+  selectable: true,
+  group: ScaleType.Ordinal,
+  domain: ['#e53935', '#43a047']
+};
+
   async ngOnInit() {
     await this.getAllAppointmentCitas();
     await this.getServicesService();
@@ -80,8 +100,48 @@ export class GraphicsComponent   implements OnInit {
     await this.getEmployeesEmpleado()
     await this.getAllCancellarionEmpleado();
     this.applyFiltersService(); // Aplicar filtros al cargar datos
-
+    this.generateClientDistributionChart();
+    this.generateCancellationRateChart();
   }
+
+
+   // Gráfica 1: Distribución de clientes por servicio
+   generateClientDistributionChart() {
+    // Solo genera los datos una vez
+    if (this.clientDistributionChartData.length === 0) {
+      const serviceClientMap: { [key: string]: Set<string> } = {};
+
+      this.appointments.forEach(app => {
+        if (!serviceClientMap[app.service]) {
+          serviceClientMap[app.service] = new Set();
+        }
+        serviceClientMap[app.service].add(app.customer);
+      });
+
+      this.clientDistributionChartData = Object.entries(serviceClientMap).map(([service, clients]) => ({
+        name: this.services.find(s => s.id === service)?.name || service,
+        value: clients.size
+      }));
+    }
+  }
+
+  // Gráfica 2: Porcentaje de cancelaciones frente a reservas
+
+  generateCancellationRateChart() {
+    // Solo genera los datos una vez
+    if (this.cancellationChartData.length === 0) {
+      const totalAppointments = this.appointments.length;
+      const cancellations = this.appointments.filter(app => app.status.toUpperCase() === 'CANCELED').length;
+
+      this.cancellationRate = totalAppointments > 0 ? (cancellations / totalAppointments) * 100 : 0;
+
+      this.cancellationChartData = [
+        { name: 'Canceladas', value: cancellations },
+        { name: 'Completadas o Reservadas', value: totalAppointments - cancellations }
+      ];
+    }
+  }
+  
 
   //////////////////////////////////////////////////////////////////////////////////////////////////
   ///Citas
@@ -154,7 +214,7 @@ export class GraphicsComponent   implements OnInit {
     }
   
     // Calcular el total de los precios
-    this.total = 145; // Calcular el total
+    this.total = 445; // Calcular el total
   }
   
   realizarReportCitas() {

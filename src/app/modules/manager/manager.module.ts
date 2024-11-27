@@ -9,6 +9,7 @@ import { ClientsComponent } from './clients/clients.component';
 import { EmployeesComponent } from './employees/employees.component';
 import { SettingsComponent } from './settings/settings.component';
 import { GraphicsComponent } from './graphics/graphics.component';
+import { GraficosComponent } from './graficos/graficos.component';
 
 @NgModule({
   declarations: [],
@@ -21,7 +22,8 @@ import { GraphicsComponent } from './graphics/graphics.component';
     ClientsComponent,
     EmployeesComponent,
     SettingsComponent,
-    GraphicsComponent
+    GraphicsComponent,
+    GraficosComponent
   ]
 })
 export class ManagerModule { }
