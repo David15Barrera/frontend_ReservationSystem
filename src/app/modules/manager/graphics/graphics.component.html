@@ -223,6 +223,54 @@
       </div>
     </main>
   </div>
+  <div *ngIf="activeTab === 2">
+    <main class="p-6 bg-gray-50">
+        <!-- Header -->
+        <div class="flex justify-between items-center bg-white shadow-md p-4 rounded-md mb-6">
+          <h2 class="text-xl font-bold text-gray-700">Gráfica General de Empleados Activos</h2>
+          <button 
+            class="bg-blue-500 text-white px-4 py-2 rounded-md shadow hover:bg-blue-600 transition"
+            (click)="realizarReportEmpleado()">
+            Mostrar Gráfica
+          </button>
+        </div>
+      
+        <!-- Chart Section 
+        <div *ngIf="chartData.length > 0" class="flex justify-center mb-6">
+          <ngx-charts-bar-vertical
+            [results]="chartData"
+            [xAxis]="true"
+            [yAxis]="true"
+            [legend]="true"
+            [showDataLabel]="true"
+            [animations]="true">
+          </ngx-charts-bar-vertical>
+        </div>-->
+      
+        <!-- Table -->
+        <div class="bg-white shadow-md p-4 rounded-md overflow-auto">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-gray-100 border-b">
+              <tr>
+                <th class="py-2 px-4 text-gray-700 font-medium">#</th>
+                <th class="py-2 px-4 text-gray-700 font-medium">Nombre</th>
+                <th class="py-2 px-4 text-gray-700 font-medium">Email</th>
+                <th class="py-2 px-4 text-gray-700 font-medium">CUI</th>
+                <th class="py-2 px-4 text-gray-700 font-medium">Cantidad Citas</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of clientReportEmp; let i = index" class="border-b hover:bg-gray-50">
+                <td class="py-2 px-4 text-gray-600">{{ i + 1 }}</td>
+                <td class="py-2 px-4 text-gray-600">{{ item.Nombre }}</td>
+                <td class="py-2 px-4 text-gray-600">{{ item.email }}</td>
+                <td class="py-2 px-4 text-gray-600">{{ item.cui }}</td>
+                <td class="py-2 px-4 text-gray-600">{{ item.Cantidad }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+</main>
 </div>
 
               
