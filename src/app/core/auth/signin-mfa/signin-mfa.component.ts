@@ -49,7 +49,7 @@ export class SigninMfaComponent {
             this.router.navigate(['/user/dashboard'])
             break
           default:
-            this.router.navigate(['/session/login'])
+            this.router.navigate(['/manager/inicio'])
         }
       },
       error: err =>{

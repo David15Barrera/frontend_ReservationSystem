@@ -61,6 +61,10 @@ export class MfaComponent {
       case "CLIENTE":
         this.router.navigate(['user/dashboard'])
         break
+      default:
+      // Si el rol no es ADMIN, EMPLEADO ni CLIENTE, redirige a manager/inicio por defecto
+      this.router.navigate(['manager/inicio']);
+      break;  
     }
   }
 }

@@ -7,11 +7,11 @@ import { Store } from '@ngrx/store';
 import { SignInModel } from '../../interfaces/sesion';
 import { setSession } from '../../../store/session/actions/session.actions';
 import Swal from 'sweetalert2';
-
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ ReactiveFormsModule, RouterLink],
+  imports: [ ReactiveFormsModule, RouterLink, CommonModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.scss'
 })
@@ -33,44 +33,60 @@ export class LoginComponent {
 
 
   login() {
-    //TODO: agregar mensaje de validaciones, campos vacios etc..
-    const email = this.loginForm.get('email')!.value!
+    if (this.loginForm.invalid) {
+      // Verifica si el formulario es inválido
+      Swal.fire({
+        icon: 'error',
+        title: 'Campos vacíos o inválidos',
+        text: 'Por favor, complete todos los campos correctamente.',
+      });
+      return;
+    }
+
+    const email = this.loginForm.get('email')!.value!;
     let signInModel: SignInModel = {
       email: email,
-      password: this.loginForm.get('password')!.value!
-    }
+      password: this.loginForm.get('password')!.value!,
+    };
+
     this.authService.signin(signInModel).subscribe({
-      next: value => {
+      next: (value) => {
         this.store.dispatch(setSession({ session: value }));
-        localStorage.setItem("current_user", email);
-      
+        localStorage.setItem('current_user', email);
+
         if (value) {
           // Si el rol es ADMIN, redirige a una ruta específica
-          if (value.role === "ADMIN") {
+          if (value.role === 'ADMIN') {
             this.router.navigate(['manager/inicio']);
           } 
           // Si el rol es CLIENTE, redirige a una ruta diferente
-          else if (value.role === "CLIENTE") {
+          else if (value.role === 'CLIENTE') {
             this.router.navigate(['user/dashboard']);
-          }
-          else{
-            console.log("Redirigiendo a else como otro rol:", value.role);
-            this.router.navigate(['manager/inicio'])
+          } else {
+            console.log('Redirigiendo a else como otro rol:', value.role);
+            this.router.navigate(['manager/inicio']);
           }
         } else {
           this.router.navigate(['session/signin-mfa']);
         }
-      },      
-      error: err =>{
+      },
+      error: (err) => {
         Swal.fire({
-          icon: "info",
-          title: "Oops...",
-          text: "Credenciales invalidas",
-          footer: '<a>Asegurese de ingresar correctamente sus credenciales</a>'
+          icon: 'error',
+          title: 'Oops...',
+          text: 'Credenciales inválidas',
+          footer: '<a>Asegúrese de ingresar correctamente sus credenciales</a>',
         });
-      }
-    })
+      },
+    });
   }
 
+
+  passwordFieldType: string = 'password';
+
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+  }
+  
 
 }

@@ -5,10 +5,12 @@ import { SignUpDto } from '../../interfaces/auth-sesion';
 import { AuthSesionService } from '../../services/auth-sesion.service';
 import { Router } from '@angular/router';
 import { RouterLink } from '@angular/router';
+import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-register',
   standalone: true,
-  imports: [ReactiveFormsModule, RouterLink],
+  imports: [ReactiveFormsModule, RouterLink,CommonModule],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss'
 })
@@ -117,6 +119,13 @@ export class RegisterComponent {
         }
       }
     });
+  }
+
+
+  passwordFieldType: string = 'password';
+
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
   }
 
 }

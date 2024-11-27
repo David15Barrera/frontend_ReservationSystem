@@ -6,10 +6,11 @@ import Swal from 'sweetalert2';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../../store';
 import { setSession } from '../../../store/session/actions/session.actions';
+import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-change-password',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './change-password.component.html',
   styleUrl: './change-password.component.scss'
 })
@@ -45,21 +46,12 @@ export class ChangePasswordComponent {
 
       this.authService.recoverPasswordChange(this.NewPassword, Number(id)).subscribe({
         next: value => {
-          let roleUpper = value.role.toUpperCase()
+          let roleUpper = value.role.toUpperCase();
           this.acctionAccept();
-          this.store.dispatch(setSession({ session: value }))
-          switch (roleUpper) {
-            case "ADMIN":
-              this.router.navigate(['manager/inicio'])
-              break
-            case "EMPLEADO":
-              this.router.navigate(['manager/inicio'])
-              break
-            case "CLIENTE":
-              this.router.navigate(['user/dashboard'])
-              break
-          }
-
+          this.store.dispatch(setSession({ session: value }));
+          
+          // Redirigir siempre a la página de login
+          this.router.navigate(['/session/login']);          
         },
         error: err => {
           console.log(err);
@@ -103,4 +95,12 @@ export class ChangePasswordComponent {
       text: "Felicidades hemos cambiado la contraseña con exito"
     })
   }
+
+  passwordFieldType: string = 'password';
+
+  togglePasswordVisibility() {
+    this.passwordFieldType = this.passwordFieldType === 'password' ? 'text' : 'password';
+    console.log(this.passwordFieldType); // Esto debería mostrar 'text' o 'password'
+  }
+  
 }
